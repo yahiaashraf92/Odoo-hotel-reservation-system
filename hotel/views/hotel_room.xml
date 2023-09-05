@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hotel_room_tree_view" model="ir.ui.view">
+            <field name="name">hotel_room_tree_view</field>
+            <field name="model">hotel.room</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name = "room_seq"/>
+                    <field name = "type"/>
+                    <field name = "floor"/>
+                    <field name = "number"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="unique_sequence_id" model="ir.sequence">
+            <field name="name">unique_sequence_id</field>
+            <field name="code">hotel.room</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">ROOM</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <record id="hotel_room_form_view" model="ir.ui.view">
+            <field name="name">hotel_room_form_view</field>
+            <field name="model">hotel.room</field>
+            <field name="arch" type="xml">
+                <form>
+                        <group>
+                            <field name="room_seq"/>
+                            <field name="type"/>
+                            <field name="cost"/>
+                        </group>
+                        <group>
+                            <field name="floor"/>
+                            <field name="number"/>
+                        </group>
+                </form>
+            </field>
+        </record>
+
+        <record id="hotel_room_action_view" model="ir.actions.act_window">
+            <field name="name">Hotel Room</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hotel.room</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+         <menuitem id="hotel_room_menu_item" name="Room"
+                  parent="hotel_reservation_menu_root" action="hotel_room_action_view"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="hotel_reservation_tree_view" model="ir.ui.view">
+            <field name="name">hotel_reservation_tree_view</field>
+            <field name="model">hotel.reservation</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name = "reservation_seq"/>
+                    <field name = "customer"/>
+                    <field name = "room"/>
+                    <field name = "room_type"/>
+                    <field name = "from_date"/>
+                    <field name = "end_date"/>
+                    <field name = "state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="unique_sequence_id" model="ir.sequence">
+            <field name="name">unique_sequence_id</field>
+            <field name="code">hotel.reservation</field>
+            <field name="active">TRUE</field>
+            <field name="prefix">RES</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+
+        <record id="hotel_reservation_form_view" model="ir.ui.view">
+            <field name="name">hotel_reservation_form_view</field>
+            <field name="model">hotel.reservation</field>
+            <field name="arch" type="xml">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel"/>
+                    <button name="action_change_state_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('state', '=', 'cancel'), ('state', '=', 'confirm')]}"/>
+                    <button name="action_change_state_cancel" string="cancel" type="object" class="oe_highlight" attrs="{'invisible': [('state', '=', 'cancel')]}"/>
+                </header>
+                <sheet>
+                    <form>
+                        <group>
+                            <field name="reservation_seq"/>
+                            <field name="customer"/>
+                            <field name="room_type"/>
+                            <field name="room" domain="[('type', '=', room_type)]"/>
+                            <field name="room_cost"/>
+                        </group>
+                        <group>
+                            <field name="from_date"/>
+                            <field name="end_date"/>
+                            <field name="total_cost"/>
+                            <field name="employee"/>
+                            <field name="note"/>
+                        </group>
+                </form>
+                </sheet>
+            </field>
+        </record>
+
+        <record id="hotel_reservation_calender_view" model="ir.ui.view">
+            <field name="name">hotel_reservation_calender_view</field>
+            <field name="model">hotel.reservation</field>
+            <field name="arch" type="xml">
+                <calendar string="Reservation Calendar" date_start="from_date" date_stop="end_date" color="customer">
+                    <field name="reservation_seq"/>
+                    <field name="customer"/>
+                    <field name="room"/>
+                </calendar>
+            </field>
+        </record>
+
+        <record id="hotel_reservation_search_view" model="ir.ui.view">
+            <field name="name">hotel_reservation_search_view</field>
+            <field name="model">hotel.reservation</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="due_date" name="end_date" date="end_date"/>
+                    <group>
+                        <filter string="customer" name="group_by_customer" context="{'group_by':'customer'}"/>
+                        <filter string="room" name="group_by_room" context="{'group_by':'room'}"/>
+                        <filter string="employee" name="group_by_employee" context="{'group_by':'employee'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+        <record id="hotel_reservation_action_view" model="ir.actions.act_window">
+            <field name="name">Hotel Reservation</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">hotel.reservation</field>
+            <field name="view_mode">calendar,tree,form</field>
+        </record>
+
+        <menuitem id="hotel_reservation_menu_root" name="Hotel"/>
+
+        <menuitem id="hotel_reservation_menu_item" name="Reservation"
+                  parent="hotel_reservation_menu_root" action="hotel_reservation_action_view"/>
+    </data>
+</odoo>
